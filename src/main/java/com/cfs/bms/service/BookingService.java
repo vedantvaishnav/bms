@@ -99,7 +99,7 @@ public class BookingService {
         return mapToBookingDto(booking,seats);
     }
 
-    private BookingDto getBookingByNumber(String bookingNumber)
+    public BookingDto getBookingByNumber(String bookingNumber)
     {
         Booking booking=bookingRepository.findByBookingNumber(bookingNumber)
                 .orElseThrow(()->new ResourceNotFoundException("Booking Not Found"));
@@ -110,7 +110,7 @@ public class BookingService {
         return mapToBookingDto(booking,seats);
     }
 
-    private List<BookingDto> getBookingByUserId(Long userId)
+    public List<BookingDto> getBookingByUserId(Long userId)
     {
         List<Booking> bookings = bookingRepository.findByUserId(userId);
         return bookings.stream()
@@ -161,7 +161,7 @@ public class BookingService {
         bookingDto.setId(booking.getId());
         bookingDto.setBookingNumber(booking.getBookingNumber());
         bookingDto.setBookingTime(booking.getBookingTime());
-        bookingDto.setStatus(bookingDto.getStatus());
+        bookingDto.setStatus(booking.getStatus());
         bookingDto.setTotalAmount(booking.getTotalAmount());
 
         //user
@@ -196,11 +196,20 @@ public class BookingService {
 
 
         TheaterDto theaterDto=new TheaterDto();
-        theaterDto.setId(bookingDto.getShow().getScreen().getTheater().getId());
-        theaterDto.setName(bookingDto.getShow().getScreen().getTheater().getName());
-        theaterDto.setAddress(bookingDto.getShow().getScreen().getTheater().getAddress());
-        theaterDto.setCity(bookingDto.getShow().getScreen().getTheater().getCity());
-        theaterDto.setTotalScreens(bookingDto.getShow().getScreen().getTheater().getTotalScreens());
+        theaterDto.setId(
+                booking.getShow().getScreen().getTheater().getId());
+
+        theaterDto.setName(
+                booking.getShow().getScreen().getTheater().getName());
+
+        theaterDto.setAddress(
+                booking.getShow().getScreen().getTheater().getAddress());
+
+        theaterDto.setCity(
+                booking.getShow().getScreen().getTheater().getCity());
+
+        theaterDto.setTotalScreens(
+                booking.getShow().getScreen().getTheater().getTotalScreens());
 
         screenDto.setTheater(theaterDto);
         showDto.setScreen(screenDto);
